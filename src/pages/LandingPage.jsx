@@ -25,12 +25,6 @@ export default function LandingPage({ navigate }) {
           </div>
           <span className="text-sm font-semibold text-slate-400">StaGove</span>
         </div>
-        <button
-          onClick={() => navigate('settings')}
-          className="text-sm text-slate-400 hover:text-slate-200 transition-colors px-3 py-1.5 rounded-lg hover:bg-navy-800"
-        >
-          Settings
-        </button>
       </header>
 
       {/* Hero */}
@@ -73,19 +67,13 @@ export default function LandingPage({ navigate }) {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex justify-center">
           <button
             onClick={() => navigate('input')}
             className="flex items-center gap-2 px-8 py-4 bg-sentinel-blue hover:bg-blue-500 text-white font-semibold rounded-xl transition-all glow-blue text-lg"
           >
             Start Vendor Audit
             <ArrowRight className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => navigate('settings')}
-            className="px-6 py-4 text-slate-400 hover:text-slate-200 transition-colors text-sm"
-          >
-            Configure API Key →
           </button>
         </div>
       </section>
