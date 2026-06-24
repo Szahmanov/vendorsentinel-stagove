@@ -50,22 +50,22 @@ export default function LandingPage({ navigate }) {
         </p>
 
         {/* Sample savings */}
-        <div className="inline-flex flex-wrap items-center justify-center gap-4 sm:gap-8 px-6 py-5 rounded-2xl bg-navy-900 border border-navy-700 mb-12 w-full sm:w-auto">
+        <div className="flex items-center justify-center gap-4 px-4 py-4 rounded-2xl bg-navy-900 border border-navy-700 mb-12 w-full max-w-xs mx-auto">
           <div className="text-center">
-            <div className="text-2xl font-bold text-slate-300">$450</div>
-            <div className="text-xs text-slate-500 mt-1">Current/mo</div>
+            <div className="text-lg font-bold text-slate-300">$450</div>
+            <div className="text-xs text-slate-500 mt-0.5">Current/mo</div>
           </div>
-          <div className="flex items-center gap-2 text-sentinel-cyan">
-            <TrendingDown className="w-5 h-5" />
-            <ArrowRight className="w-4 h-4 text-slate-600" />
+          <div className="flex items-center gap-1 text-sentinel-cyan">
+            <TrendingDown className="w-4 h-4" />
+            <ArrowRight className="w-3 h-3 text-slate-600" />
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-sentinel-cyan">$180</div>
-            <div className="text-xs text-slate-500 mt-1">Optimized/mo</div>
+            <div className="text-lg font-bold text-sentinel-cyan">$180</div>
+            <div className="text-xs text-slate-500 mt-0.5">Optimized/mo</div>
           </div>
-          <div className="border-l border-navy-700 pl-8 text-center">
-            <div className="text-2xl font-bold text-green-400">$3,240</div>
-            <div className="text-xs text-slate-500 mt-1">Saved/year</div>
+          <div className="border-l border-navy-700 pl-4 text-center">
+            <div className="text-lg font-bold text-green-400">$3,240</div>
+            <div className="text-xs text-slate-500 mt-0.5">Saved/year</div>
           </div>
         </div>
 
