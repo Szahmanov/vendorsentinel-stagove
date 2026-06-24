@@ -27,21 +27,21 @@ export default function LandingPage({ navigate }) {
       </header>
 
       {/* Hero */}
-      <section className="max-w-5xl mx-auto px-6 pt-16 pb-24 text-center">
+      <section className="max-w-5xl mx-auto px-6 pt-10 pb-16 text-center overflow-hidden">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sentinel-blue/10 border border-sentinel-blue/20 text-sentinel-blue text-xs font-medium mb-8">
           <div className="w-1.5 h-1.5 rounded-full bg-sentinel-cyan animate-pulse" />
           Autonomous Software Eradication Agent
         </div>
 
-        <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight mb-6">
+        <h1 className="text-4xl sm:text-6xl font-bold text-white leading-tight mb-6 break-words">
           <span className="gradient-text">VendorSentinel</span>
-          <span className="block text-slate-200 text-4xl sm:text-5xl mt-2">AI</span>
+          <span className="block text-slate-200 text-3xl sm:text-5xl mt-2">AI</span>
         </h1>
 
         {/* Tagline */}
         <div className="max-w-lg mx-auto mb-12 space-y-1">
           {['Identify waste.', 'Eliminate redundant software.', 'Replace expensive vendors.', 'Generate migration plans.', 'Reduce software costs autonomously.'].map((line, i) => (
-            <p key={i} className={`text-lg leading-relaxed ${i === 0 ? 'text-slate-300 font-semibold' : 'text-slate-400'}`}>{line}</p>
+            <p key={i} className={`text-base sm:text-lg leading-relaxed ${i === 0 ? 'text-slate-300 font-semibold' : 'text-slate-400'}`}>{line}</p>
           ))}
         </div>
 
@@ -50,7 +50,7 @@ export default function LandingPage({ navigate }) {
         </p>
 
         {/* Sample savings */}
-        <div className="inline-flex items-center gap-8 px-8 py-5 rounded-2xl bg-navy-900 border border-navy-700 mb-12">
+        <div className="inline-flex flex-wrap items-center justify-center gap-4 sm:gap-8 px-6 py-5 rounded-2xl bg-navy-900 border border-navy-700 mb-12 w-full sm:w-auto">
           <div className="text-center">
             <div className="text-2xl font-bold text-slate-300">$450</div>
             <div className="text-xs text-slate-500 mt-1">Current/mo</div>
