@@ -1,4 +1,4 @@
-import { Shield, BarChart3, Table, Workflow, Map, FileText, Settings, ChevronLeft } from 'lucide-react'
+import { Shield, BarChart3, Table, Workflow, Map, FileText, ChevronLeft } from 'lucide-react'
 
 const navItems = [
   { id: 'results', label: 'Dashboard', icon: BarChart3, requiresResults: true },
@@ -6,7 +6,6 @@ const navItems = [
   { id: 'workflows', label: 'Workflows', icon: Workflow, requiresResults: true },
   { id: 'migration', label: 'Migration', icon: Map, requiresResults: true },
   { id: 'report', label: 'Report', icon: FileText, requiresResults: true },
-  { id: 'settings', label: 'Settings', icon: Settings, requiresResults: false },
 ]
 
 export default function NavBar({ currentPage, navigate, hasResults }) {
@@ -27,16 +26,18 @@ export default function NavBar({ currentPage, navigate, hasResults }) {
         </button>
 
         <nav className="flex items-center gap-1">
-          {!hasResults && (
-            <button
-              onClick={() => navigate('input')}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-slate-300 hover:text-white hover:bg-navy-800 rounded-lg transition-colors"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-              New Audit
-            </button>
-          )}
-          
+          <button
+            onClick={() => navigate('input')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-lg transition-colors ${
+              currentPage === 'input'
+                ? 'bg-sentinel-blue/20 text-sentinel-blue'
+                : 'text-slate-300 hover:text-white hover:bg-navy-800'
+            }`}
+          >
+            <ChevronLeft className="w-3.5 h-3.5" />
+            New Audit
+          </button>
+
           {navItems.map(item => {
             if (item.requiresResults && !hasResults) return null
             const Icon = item.icon
