@@ -4,6 +4,7 @@ import InputPage from './pages/InputPage.jsx'
 import ProcessingPage from './pages/ProcessingPage.jsx'
 import ResultsDashboard from './pages/ResultsDashboard.jsx'
 import VendorTable from './pages/VendorTable.jsx'
+import ReplacementsPage from './pages/ReplacementsPage.jsx'
 import WorkflowsPage from './pages/WorkflowsPage.jsx'
 import MigrationPage from './pages/MigrationPage.jsx'
 import ReportPage from './pages/ReportPage.jsx'
@@ -45,6 +46,7 @@ export default function App() {
         {page === 'processing' && <ProcessingPage steps={processingSteps} navigate={navigate} />}
         {page === 'results' && auditData && <ResultsDashboard data={auditData} navigate={navigate} />}
         {page === 'vendors' && auditData && <VendorTable vendors={auditData.vendors} navigate={navigate} />}
+        {page === 'replacements' && auditData && <ReplacementsPage replacements={auditData.replacements} vendors={auditData.vendors} navigate={navigate} />}
         {page === 'workflows' && auditData && <WorkflowsPage workflows={auditData.workflows} vendors={auditData.vendors} navigate={navigate} />}
         {page === 'migration' && auditData && <MigrationPage plan={auditData.migration_plan} summary={auditData.summary} navigate={navigate} />}
         {page === 'report' && auditData && <ReportPage data={auditData} navigate={navigate} />}
