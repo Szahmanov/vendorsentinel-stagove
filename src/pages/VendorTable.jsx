@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, Filter } from 'lucide-react'
+import { Filter, ChevronDown, ChevronUp } from 'lucide-react'
 
 const decisionColors = {
   KEEP: 'text-green-400 bg-green-950/30 border-green-900/40',
@@ -15,7 +15,7 @@ const riskColors = {
   HIGH: 'text-red-400',
 }
 
-export default function VendorTable({ vendors, navigate }) {
+export default function VendorTable({ vendors }) {
   const [filter, setFilter] = useState('ALL')
   const [expanded, setExpanded] = useState(null)
   const [sort, setSort] = useState({ field: 'monthly_cost', dir: 'desc' })
@@ -31,120 +31,170 @@ export default function VendorTable({ vendors, navigate }) {
       return 0
     })
 
-  const toggleSort = (field) => {
-    setSort(s => s.field === field ? { field, dir: s.dir === 'asc' ? 'desc' : 'asc' } : { field, dir: 'desc' })
-  }
-
   const totalFiltered = filtered.reduce((sum, v) => sum + (v.monthly_cost || 0), 0)
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
+    <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-100 mb-1">Vendor Decisions</h1>
         <p className="text-slate-500 text-sm">Every tool. Every decision. With reasoning.</p>
       </div>
 
       {/* Filter bar */}
-      <div className="flex items-center gap-2 mb-6 flex-wrap">
-        <Filter className="w-3.5 h-3.5 text-slate-500" />
+      <div className="flex items-center gap-2 mb-4 flex-wrap">
+        <Filter className="w-3.5 h-3.5 text-slate-500 flex-shrink-0" />
         {decisions.map(d => (
-          <button
-            key={d}
-            onClick={() => setFilter(d)}
+          <button key={d} onClick={() => setFilter(d)}
             className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
               filter === d
-                ? d === 'ALL'
-                  ? 'bg-slate-700 border-slate-600 text-slate-200'
-                  : `border ${decisionColors[d]}`
+                ? d === 'ALL' ? 'bg-slate-700 border-slate-600 text-slate-200' : `border ${decisionColors[d]}`
                 : 'border-navy-700 text-slate-500 hover:text-slate-300 hover:border-navy-600'
-            }`}
-          >
+            }`}>
             {d} {d !== 'ALL' && `(${vendors.filter(v => v.decision === d).length})`}
           </button>
         ))}
-        <div className="ml-auto text-xs text-slate-500">
+        <div className="ml-auto text-xs text-slate-500 flex-shrink-0">
           {filtered.length} vendors · ${totalFiltered.toFixed(2)}/mo
         </div>
       </div>
 
-      {/* Table */}
-      <div className="card overflow-hidden">
-        {/* Header */}
-        <div className="grid grid-cols-12 gap-2 px-4 py-3 border-b border-navy-700 text-xs text-slate-500 font-medium uppercase tracking-wider">
-          <div className="col-span-3 cursor-pointer flex items-center gap-1" onClick={() => toggleSort('name')}>
-            Vendor
-            {sort.field === 'name' && (sort.dir === 'asc' ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />)}
-          </div>
-          <div className="col-span-2">Category</div>
-          <div className="col-span-1 cursor-pointer flex items-center gap-1 justify-end" onClick={() => toggleSort('monthly_cost')}>
-            Cost
-            {sort.field === 'monthly_cost' && (sort.dir === 'asc' ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />)}
-          </div>
-          <div className="col-span-2">Decision</div>
-          <div className="col-span-1">Risk</div>
-          <div className="col-span-3">Reason</div>
-        </div>
-
-        {/* Rows */}
-        <div className="divide-y divide-navy-800">
-          {filtered.map((v, i) => (
-            <div key={i}>
-              <div
-                className="grid grid-cols-12 gap-2 px-4 py-3 hover:bg-navy-800/30 cursor-pointer transition-colors items-start"
-                onClick={() => setExpanded(expanded === i ? null : i)}
+      {/* Cards — works on all screen sizes */}
+      <div className="space-y-3">
+        {filtered.map((v, i) => {
+          const reason = v.reasoning || v.reason || ''
+          const isOpen = expanded === i
+          return (
+            <div key={i} className="card overflow-hidden">
+              {/* Main row */}
+              <button
+                className="w-full text-left p-4 hover:bg-navy-800/30 transition-colors"
+                onClick={() => setExpanded(isOpen ? null : i)}
               >
-                <div className="col-span-3">
-                  <div className="text-sm text-slate-200 font-medium">{v.name}</div>
-                  {v.duplicate_of?.length > 0 && (
-                    <div className="text-xs text-amber-400/70 mt-0.5">
-                      Overlaps: {v.duplicate_of.join(', ')}
+                <div className="flex items-start gap-3">
+                  {/* Decision badge */}
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded border flex-shrink-0 mt-0.5 ${decisionColors[v.decision]}`}>
+                    {v.decision}
+                  </span>
+
+                  {/* Name + category */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                      <span className="text-sm font-semibold text-slate-200">{v.name}</span>
+                      <span className="text-xs text-slate-500">{v.category?.replace(/_/g, ' ')}</span>
+                    </div>
+                    {v.duplicate_of?.length > 0 && (
+                      <div className="text-xs text-amber-400/80 mt-0.5">
+                        Overlaps: {v.duplicate_of.join(', ')}
+                      </div>
+                    )}
+                    {v.existing_stack_replacement && (
+                      <div className="text-xs text-green-400 mt-0.5">
+                        → Use {v.existing_stack_replacement} (already owned)
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Cost + risk + chevron */}
+                  <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                    <span className="text-sm font-mono text-slate-300">${(v.monthly_cost || 0).toFixed(2)}/mo</span>
+                    <span className={`text-xs font-medium ${riskColors[v.risk]}`}>{v.risk} risk</span>
+                  </div>
+                  {isOpen
+                    ? <ChevronUp className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                    : <ChevronDown className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                  }
+                </div>
+
+                {/* Reason preview (collapsed) */}
+                {!isOpen && reason && (
+                  <p className="text-xs text-slate-500 mt-2 leading-relaxed line-clamp-2 pl-0">
+                    {reason}
+                  </p>
+                )}
+              </button>
+
+              {/* Expanded details */}
+              {isOpen && (
+                <div className="border-t border-navy-800 p-4 bg-navy-950/40 space-y-3">
+                  {/* Full reasoning */}
+                  {reason && (
+                    <div>
+                      <div className="text-xs font-medium text-slate-400 mb-1 uppercase tracking-wider">Reasoning</div>
+                      <p className="text-sm text-slate-400 leading-relaxed">{reason}</p>
+                    </div>
+                  )}
+
+                  {/* Scores */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {v.confidence_score != null && (
+                      <div className="p-2 bg-navy-900 rounded-lg text-center">
+                        <div className="text-xs text-slate-500 mb-0.5">Confidence</div>
+                        <div className="text-sm font-bold text-sentinel-blue">{v.confidence_score}%</div>
+                      </div>
+                    )}
+                    {v.risk_score != null && (
+                      <div className="p-2 bg-navy-900 rounded-lg text-center">
+                        <div className="text-xs text-slate-500 mb-0.5">Risk Score</div>
+                        <div className={`text-sm font-bold ${riskColors[v.risk]}`}>{v.risk_score}/100</div>
+                      </div>
+                    )}
+                    {(v.estimated_annual_savings || v.estimated_monthly_savings) && (
+                      <div className="p-2 bg-navy-900 rounded-lg text-center">
+                        <div className="text-xs text-slate-500 mb-0.5">Annual Saving</div>
+                        <div className="text-sm font-bold text-green-400">
+                          ${(v.estimated_annual_savings || (v.estimated_monthly_savings || 0) * 12).toLocaleString()}
+                        </div>
+                      </div>
+                    )}
+                    {v.migration_time_estimate && (
+                      <div className="p-2 bg-navy-900 rounded-lg text-center">
+                        <div className="text-xs text-slate-500 mb-0.5">Migration</div>
+                        <div className="text-sm font-bold text-amber-400">{v.migration_time_estimate}</div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Expected outcome */}
+                  {v.expected_outcome && (
+                    <div className="p-3 bg-sentinel-blue/5 border border-sentinel-blue/15 rounded-lg">
+                      <span className="text-xs text-sentinel-blue font-medium">Expected outcome: </span>
+                      <span className="text-xs text-slate-400">{v.expected_outcome}</span>
+                    </div>
+                  )}
+
+                  {/* Lock-in */}
+                  {v.lock_in_analysis?.risk_factors?.length > 0 && (
+                    <div>
+                      <div className="text-xs font-medium text-slate-400 mb-1 uppercase tracking-wider">Lock-in Risk Factors</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {v.lock_in_analysis.risk_factors.map((rf, j) => (
+                          <span key={j} className="text-xs px-2 py-0.5 bg-amber-950/30 border border-amber-900/30 text-amber-300 rounded">{rf}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Replacement suggestion */}
+                  {v.replacement_suggestion && (
+                    <div className="p-3 bg-navy-900 rounded-lg border border-navy-700">
+                      <div className="text-xs font-medium text-slate-400 mb-1">Replacement suggestion</div>
+                      <div className="text-xs text-slate-400 leading-relaxed">{v.replacement_suggestion}</div>
                     </div>
                   )}
                 </div>
-                <div className="col-span-2 text-xs text-slate-500 pt-0.5">
-                  {v.category?.replace('_', ' ')}
-                </div>
-                <div className="col-span-1 text-sm font-mono text-slate-300 text-right">
-                  ${(v.monthly_cost || 0).toFixed(2)}
-                </div>
-                <div className="col-span-2">
-                  <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded border ${decisionColors[v.decision]}`}>
-                    {v.decision}
-                  </span>
-                </div>
-                <div className={`col-span-1 text-xs font-medium pt-0.5 ${riskColors[v.risk]}`}>
-                  {v.risk}
-                </div>
-                <div className="col-span-3 text-xs text-slate-500 leading-relaxed">
-                  {expanded === i ? v.reason : v.reason?.slice(0, 80) + (v.reason?.length > 80 ? '...' : '')}
-                </div>
-              </div>
-
-              {expanded === i && v.replacement && (
-                <div className="px-4 pb-4 bg-navy-900/30">
-                  <div className="p-3 rounded-lg bg-navy-950 border border-navy-700">
-                    <div className="text-xs font-medium text-sentinel-blue mb-1">Replacement workflow</div>
-                    <div className="text-xs text-slate-400 leading-relaxed">{v.replacement}</div>
-                  </div>
-                </div>
               )}
             </div>
-          ))}
-        </div>
+          )
+        })}
 
         {filtered.length === 0 && (
-          <div className="py-12 text-center text-slate-500 text-sm">
-            No vendors match this filter.
-          </div>
+          <div className="card py-12 text-center text-slate-500 text-sm">No vendors match this filter.</div>
         )}
       </div>
 
-      {/* Summary row */}
       <div className="mt-4 flex items-center justify-between text-sm">
         <span className="text-slate-500">{filtered.length} vendors shown</span>
-        <div className="flex items-center gap-4">
-          <span className="text-slate-500">Subtotal: <span className="text-slate-200 font-mono">${totalFiltered.toFixed(2)}/mo</span></span>
-        </div>
+        <span className="text-slate-500">Total: <span className="text-slate-200 font-mono">${totalFiltered.toFixed(2)}/mo</span></span>
       </div>
     </div>
   )
