@@ -31,7 +31,7 @@ export default function LandingPage({ navigate }) {
       <section className="max-w-5xl mx-auto px-6 pt-16 pb-24 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sentinel-blue/10 border border-sentinel-blue/20 text-sentinel-blue text-xs font-medium mb-8">
           <div className="w-1.5 h-1.5 rounded-full bg-sentinel-cyan animate-pulse" />
-          Autonomous Software Audit Agent
+          Software Eradication & Cost Optimization Agent
         </div>
 
         <h1 className="text-5xl sm:text-6xl font-bold text-white leading-tight mb-6">
@@ -40,11 +40,11 @@ export default function LandingPage({ navigate }) {
         </h1>
 
         <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-4 leading-relaxed">
-          Eliminate unnecessary software. Replace complexity with autonomous intelligence.
+          Identify waste. Eliminate redundant tools. Replace expensive vendors. Generate a complete migration strategy — autonomously.
         </p>
 
         <p className="text-sm text-slate-500 max-w-xl mx-auto mb-12">
-          Not a chatbot. An autonomous agent that audits your entire software stack, detects waste, makes decisions, calculates savings, and generates a migration plan.
+          Not a chatbot. Not a spreadsheet. An autonomous agent that classifies, decides, finds free replacements, and plans the full migration without being asked.
         </p>
 
         {/* Sample savings callout */}
@@ -72,7 +72,7 @@ export default function LandingPage({ navigate }) {
             onClick={() => navigate('input')}
             className="flex items-center gap-2 px-8 py-4 bg-sentinel-blue hover:bg-blue-500 text-white font-semibold rounded-xl transition-all glow-blue text-lg"
           >
-            Start Vendor Audit
+            Start Software Eradication
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>
